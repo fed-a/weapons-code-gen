@@ -18,6 +18,8 @@ const CLASS_NAME_TEMPLATE = "$$$CLASSNAME$$$";
 const MAIN_CLASS_TEMPLATE = "$$$MAIN_CLASS$$$";
 const DISPLAY_NAME_TEMPLATE = "$$$DISPLAYNAME$$$";
 const REGISTER_RECIPES_TEMPLATE = "$$$REGISTER_RECIPES$$$";
+const INGREDIENT_NAME_TEMPLATE = "$$$INGREDIENT_NAME$$$";
+let INGREDIENT_NAME = "";
 
 const paintTemplate = readFileSync(
   Path.join(__dirname, "templates", "paint-template.c"),
@@ -93,6 +95,7 @@ function generatePaintFileContent(info: {
       paintTemplate
         .replaceAll(CLASS_NAME_TEMPLATE, classname)
         .replaceAll(MAIN_CLASS_TEMPLATE, info.mainClassName)
+        .replaceAll(INGREDIENT_NAME_TEMPLATE, INGREDIENT_NAME)
         .replaceAll(DISPLAY_NAME_TEMPLATE, info.displayNames[index]) + "\n\n";
   });
   return content;
@@ -109,8 +112,15 @@ function generateRecipesFileContent(classNames: string[]) {
   return content;
 }
 
-async function main(inputFolder: string = "input") {
-  const files = await readDirectory(inputFolder);
+async function main({
+  inputFolder = "input",
+  ingredientName = "",
+}: {
+  inputFolder: string;
+  ingredientName: string;
+}) {
+  const files = await readDirectory(Path.join(__dirname, inputFolder));
+  INGREDIENT_NAME = ingredientName;
   const parsedFiles = await Promise.all(
     files.map(async (file) => {
       const content = await readFileSync(file, "utf8");
@@ -214,8 +224,17 @@ const askInputFolder = async () => {
       message: "Введите название папки с исходными файлами",
       default: "input",
     },
+    {
+      type: "input",
+      name: "ingredientName",
+      message: "Введите название ингредиента",
+      default: "Spraycan_Weapon",
+    },
   ]);
-  main(answer.folder);
+  main({
+    inputFolder: answer.folder,
+    ingredientName: answer.ingredientName,
+  });
 };
 
 askInputFolder();

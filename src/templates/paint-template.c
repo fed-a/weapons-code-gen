@@ -33,7 +33,7 @@ class Paint_$$$CLASSNAME$$$ extends RecipeBase
 		m_IngredientUseSoftSkills[0] = false;// set 'true' to allow modification of the values by softskills on this ingredient
 		
 		//ingredient 2
-		InsertIngredient(1,"Spraycan_Weapon");//you can insert multiple ingredients this way
+		InsertIngredient(1,"$$$INGREDIENT_NAME$$$");//you can insert multiple ingredients this way
 		
 		m_IngredientAddHealth[1] = 0;// 0 = do nothing
 		m_IngredientSetHealth[1] = -1; // -1 = do nothing
