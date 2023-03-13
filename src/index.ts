@@ -119,7 +119,7 @@ async function main({
   inputFolder: string;
   ingredientName: string;
 }) {
-  const files = await readDirectory(Path.join(__dirname, inputFolder));
+  const files = await readDirectory(inputFolder);
   INGREDIENT_NAME = ingredientName;
   const parsedFiles = await Promise.all(
     files.map(async (file) => {
@@ -214,6 +214,13 @@ async function main({
   } else {
     console.log("✔ Все файлы успешно сгенерированы");
   }
+  Inquirer.prompt([
+    {
+      type: "confirm",
+      name: "continue",
+      message: "Нажмите Enter для выхода",
+    },
+  ]);
 }
 
 const askInputFolder = async () => {
